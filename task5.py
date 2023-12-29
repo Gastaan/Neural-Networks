@@ -2,55 +2,47 @@
 import numpy as np
 
 from rsdl import Tensor
-from rsdl.layers import Linear
+from rsdl.layers import Linear, Init
 from rsdl.optim import SGD
-from rsdl.losses import loss_functions
+from rsdl.losses.loss_functions import mean_square_errors
 
 X = Tensor(np.random.randn(100, 3))
 coef = Tensor(np.array([-7, +3, -9]))
 y = X @ coef + 5
 
-# TODO: define a linear layer using Linear() class  
-l = ...
+fc = Linear(3, 1)
 
-# TODO: define an optimizer using SGD() class 
-optimizer = ....
-
-# TODO: print weight and bias of linear layer
+optimizer = SGD(layers=[fc])
 
 
-learning_rate = ...
-batch_size = ...
+batch_size = 5
 
 for epoch in range(100):
-    
+
     epoch_loss = 0.0
-    
+
     for start in range(0, 100, batch_size):
         end = start + batch_size
 
-
-        print(start, end)
-
         inputs = X[start:end]
 
-        # TODO: predicted
-        predicted = ...
+        predicted = fc.forward(inputs)
 
         actual = y[start:end]
         actual.data = actual.data.reshape(batch_size, 1)
-        # TODO: calcualte MSE loss
-        
-        # TODO: backward
-        # hint you need to just do loss.backward()
+        loss = mean_square_errors(predicted, actual)
 
+        loss.zero_grad()
+        loss.backward()
+        print(loss.data)
 
-        # TODO: add loss to epoch_loss
-        epoch_loss += ...
+        epoch_loss += loss
 
+        optimizer.step()
+        fc.zero_grad()
 
-        # TODO: update w and b using optimizer.step()
-        
+        if loss.data < 0.0000001:
+            break
 
-# TODO: print weight and bias of linear layer
- 
+print(fc.weight)
+print(fc.bias)

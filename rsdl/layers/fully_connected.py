@@ -23,7 +23,7 @@ class Linear:
 
         if self.need_bias:
             self.bias = Tensor(
-                data=initializer(shape=(1, out_channels), mode=Init.ZERO),
+                data=initializer(shape=(1, out_channels), mode=Init.ZERO.value),
                 requires_grad=True
             )
             self.bias_momentum = Tensor(
@@ -31,26 +31,25 @@ class Linear:
                 requires_grad=False
             )
 
-
     def forward(self, inp: 'Tensor') -> 'Tensor':
         # Perform linear transformation
-        linear_result = input @ self.weight
+        linear_result = inp.__matmul__(self.weight)
 
         # Add bias if needed
         if self.need_bias:
             linear_result = linear_result + self.bias
 
         return linear_result
-    
+
     def parameters(self):
         if self.need_bias:
-            return [self. weight, self.bias]
-        return [self. weight]
-    
+            return [self.weight, self.bias]
+        return [self.weight]
+
     def zero_grad(self):
         self.weight.zero_grad()
         if self.need_bias:
             self.bias.zero_grad()
-            
+
     def __call__(self, inp):
         return self.forward(inp)

@@ -31,7 +31,7 @@ def initializer(shape, mode="xavier"):
     if mode == Init.HE.value:
         return he_initializer(shape)
     if mode == Init.ZERO.value:
-        return he_initializer(shape)
+        return zero_initializer(shape)
     if mode == Init.ONE.value:
         return he_initializer(shape)
     else:
