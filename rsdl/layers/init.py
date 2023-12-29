@@ -9,9 +9,6 @@ class Init(Enum):
     ONE = "one"
 
 
-
-# TODO: implement xavier_initializer, zero_initializer
-
 def xavier_initializer(shape):
     return np.random.randn(*shape) * np.sqrt(1/shape[0], dtype=np.float64)
 
