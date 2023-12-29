@@ -1,5 +1,6 @@
 from rsdl import Tensor
-from rsdl.layers import initializer
+from rsdl.layers import initializer, Init
+
 
 class Linear:
 
@@ -7,24 +8,35 @@ class Linear:
         # set input and output shape of layer
         self.shape = (in_channels, out_channels)
         self.need_bias = need_bias
-        # TODO initialize weight by initializer function (mode)
+
         self.weight = Tensor(
-            data=None,
-            requires_grad=None
+            data=initializer(shape=(in_channels, out_channels), mode=mode),
+            requires_grad=True
         )
-        # TODO initialize weight by initializer function (zero mode)
+
         if self.need_bias:
             self.bias = Tensor(
-                data=None,
-                requires_grad=None
+                data=initializer(shape=(1, out_channels), mode=Init.ZERO),
+                requires_grad=True
             )
 
-    def forward(self, inp):
-        # TODO:implement forward propagation
-        return None
+    def forward(self, inp: 'Tensor') -> 'Tensor':
+        # Check if the weight and bias are initialized
+        if self.weight is None:
+            raise ValueError("Weight matrix is not initialized.")
+        if self.need_bias and self.bias is None:
+            raise ValueError("Bias vector is not initialized.")
+
+        # Perform linear transformation
+        linear_result = input @ self.weight
+
+        # Add bias if needed
+        if self.need_bias:
+            linear_result = linear_result + self.bias
+
+        return linear_result
     
     def parameters(self):
-        
         if self.need_bias:
             return [self. weight, self.bias]
         return [self. weight]
