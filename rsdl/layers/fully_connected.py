@@ -21,12 +21,6 @@ class Linear:
             )
 
     def forward(self, inp: 'Tensor') -> 'Tensor':
-        # Check if the weight and bias are initialized
-        if self.weight is None:
-            raise ValueError("Weight matrix is not initialized.")
-        if self.need_bias and self.bias is None:
-            raise ValueError("Bias vector is not initialized.")
-
         # Perform linear transformation
         linear_result = input @ self.weight
 
