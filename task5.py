@@ -3,7 +3,7 @@ import numpy as np
 
 from rsdl import Tensor
 from rsdl.layers import Linear, Init
-from rsdl.optim import SGD, Momentum
+from rsdl.optim import SGD, Momentum, RMSprop
 from rsdl.losses.loss_functions import mean_square_errors
 
 X = Tensor(np.random.randn(100, 3))
@@ -12,7 +12,7 @@ y = X @ coef + 5
 
 fc = Linear(3, 1)
 
-optimizer = Momentum(layers=[fc])
+optimizer = RMSprop(layers=[fc])
 
 
 batch_size = 5
@@ -41,7 +41,7 @@ for epoch in range(100):
         optimizer.step()
         fc.zero_grad()
 
-        if loss.data < 0.000001:
+        if loss.data < 0.01:
             break
 
 print(fc.weight)
