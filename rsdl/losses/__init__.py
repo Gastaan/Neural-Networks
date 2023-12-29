@@ -1,1 +1,1 @@
-from rsdl.losses.loss_functions import CategoricalCrossEntropy, MeanSquaredError
+from rsdl.losses.loss_functions import mean_square_errors, cce

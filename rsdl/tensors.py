@@ -99,6 +99,8 @@ class Tensor:
         return self
 
     def __mul__(self, other) -> 'Tensor':
+        epsilon = 1e-15
+        np.cro
         return _mul(self, ensure_tensor(other))
 
     def __rmul__(self, other) -> 'Tensor':
@@ -117,13 +119,13 @@ class Tensor:
     def __getitem__(self, idcs):
         return _tensor_slice(self, idcs)
 
-    def __neg__(self, idcs):
+    def __neg__(self):
         return _tensor_neg(self)
 
     def backward(self, grad: 'Tensor' = None) -> None:
         if grad is None:
             if self.shape == ():
-                grad = Tensor(1.0)
+                grad = Tensor(np.ones_like(self.data))
             else:
                 raise RuntimeError("grad must be specified for non-0-tensor")
         self.grad.data = self.grad.data + grad.data
@@ -149,7 +151,8 @@ def _tensor_sum(t: Tensor) -> Tensor:
 
 
 def _tensor_log(t: Tensor) -> Tensor:
-    data = np.log(t.data)
+    epsilon = 1e-15
+    data = np.log(np.clip(t.data.data, epsilon, 1 - epsilon))
     req_grad = t.requires_grad
 
     if req_grad:
