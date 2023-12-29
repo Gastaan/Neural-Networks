@@ -7,6 +7,6 @@ def mean_square_errors(predicts: Tensor, actual: Tensor):
     return mse
 
 
-def cce(predicts: Tensor, actual: Tensor):
-    cross_entropy = actual.__mul__(predicts.log()).sum().__neg__()
-    return cross_entropy
+def cross_entropy(predicts: Tensor, actual: Tensor):
+    entropy = -(actual * predicts.log()).sum()
+    return entropy

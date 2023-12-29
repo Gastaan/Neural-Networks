@@ -99,8 +99,6 @@ class Tensor:
         return self
 
     def __mul__(self, other) -> 'Tensor':
-        epsilon = 1e-15
-        np.cro
         return _mul(self, ensure_tensor(other))
 
     def __rmul__(self, other) -> 'Tensor':
@@ -152,15 +150,14 @@ def _tensor_sum(t: Tensor) -> Tensor:
 
 def _tensor_log(t: Tensor) -> Tensor:
     epsilon = 1e-15
-    data = np.log(np.clip(t.data.data, epsilon, 1 - epsilon))
+    data = np.log(np.maximum(t.data.data, epsilon))
     req_grad = t.requires_grad
 
     if req_grad:
         def grad_fn(grad: np.ndarray):
-            return grad / t.data
+            return grad / np.maximum(t.data.data, epsilon)
 
         depends_on = [Dependency(t, grad_fn)]
-
     else:
         depends_on = []
 
