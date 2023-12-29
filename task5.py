@@ -3,7 +3,7 @@ import numpy as np
 
 from rsdl import Tensor
 from rsdl.layers import Linear, Init
-from rsdl.optim import SGD
+from rsdl.optim import SGD, Momentum
 from rsdl.losses.loss_functions import mean_square_errors
 
 X = Tensor(np.random.randn(100, 3))
@@ -12,7 +12,7 @@ y = X @ coef + 5
 
 fc = Linear(3, 1)
 
-optimizer = SGD(layers=[fc])
+optimizer = Momentum(layers=[fc])
 
 
 batch_size = 5
