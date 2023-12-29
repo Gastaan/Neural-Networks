@@ -1,3 +1,5 @@
+import numpy as np
+
 from rsdl import Tensor
 from rsdl.layers import initializer, Init
 
@@ -14,11 +16,21 @@ class Linear:
             requires_grad=True
         )
 
+        self.weight_momentum = Tensor(
+            data=np.zeros_like(self.weight.data),
+            requires_grad=False
+        )
+
         if self.need_bias:
             self.bias = Tensor(
                 data=initializer(shape=(1, out_channels), mode=Init.ZERO),
                 requires_grad=True
             )
+            self.bias_momentum = Tensor(
+                data=np.zeros_like(self.bias.data),
+                requires_grad=False
+            )
+
 
     def forward(self, inp: 'Tensor') -> 'Tensor':
         # Perform linear transformation
