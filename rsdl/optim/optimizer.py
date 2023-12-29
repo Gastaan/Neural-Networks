@@ -1,5 +1,8 @@
+from rsdl.layers import Linear
+
+
 class Optimizer:
-    def __init__(self, layers):
+    def __init__(self, layers: [Linear]):
         self.layers = layers
     
     def zero_grad(self):
