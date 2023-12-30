@@ -8,7 +8,7 @@ from torchvision.transforms import ToTensor
 from rsdl import Tensor
 from rsdl.activations import Softmax, Tanh, Sigmoid, Relu, LeakyRelu
 from rsdl.layers import Linear
-from rsdl.optim import Adam
+from rsdl.optim import Adam, Momentum
 from rsdl.losses import mean_square_errors, cross_entropy
 
 sys.setrecursionlimit(10000)
@@ -46,7 +46,7 @@ class Model:
         # self.layer3 = Linear(hidden_size, hidden_size, need_bias=True)
         # self.layer4 = Linear(hidden_size, hidden_size, need_bias=True)
         self.layer5 = Linear(hidden_size, output_size, need_bias=True)
-        self.optimizer = Adam(layers=[self.layer0, self.layer5])
+        self.optimizer = Momentum(layers=[self.layer0, self.layer5])
 
     def forward(self, x):
         # Assuming x is a tensor with size (batch_size, 1, 28, 28)
