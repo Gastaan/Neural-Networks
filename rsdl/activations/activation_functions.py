@@ -11,7 +11,11 @@ def Tanh(t: Tensor) -> Tensor:
 
 
 def Softmax(t: Tensor) -> Tensor:
-    return t.exp() * (Tensor(np.ones_like(t) * t.exp().sum()) ** -1)
+    exp = t.exp()
+    sum_exp = exp @ (np.ones((exp.shape[-1], 1)))
+    softmax_tensor = exp * (sum_exp ** -1)
+
+    return softmax_tensor
 
 
 def Relu(t: Tensor) -> Tensor:

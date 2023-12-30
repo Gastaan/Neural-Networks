@@ -150,7 +150,7 @@ def _tensor_sum(t: Tensor) -> Tensor:
 
 def _tensor_log(t: Tensor) -> Tensor:
     epsilon = 1e-15
-    data = np.log(np.maximum(t.data.data, epsilon))
+    data = np.log(np.maximum(t.data, epsilon))
     req_grad = t.requires_grad
 
     if req_grad:

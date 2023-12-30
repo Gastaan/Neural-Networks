@@ -40,7 +40,7 @@ for epoch in range(100):
         optimizer.step()
         fc.zero_grad()
 
-        if loss.data < 0.01:
+        if loss.data < 0.000001:
             break
 
 print(fc.weight)
